@@ -8,6 +8,11 @@
       - apps is not defined
       - users is not defined
 
+- name: create empty vars
+  set_fact:
+    apps: {}
+    users: []
+
 - name: apps
   set_fact:
     apps: "{{apps|default({})|combine(hostvars[inventory_hostname][item], recursive=True)}}"
