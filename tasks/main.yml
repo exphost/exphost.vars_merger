@@ -7,11 +7,13 @@
     that:
       - apps is not defined
       - users is not defined
+      - configs is not defined
 
 - name: create empty vars
   set_fact:
     apps: {}
     users: []
+    configs: {}
 
 - name: apps
   set_fact:
@@ -22,3 +24,8 @@
   set_fact:
     users: "{{users|default([]) + hostvars[inventory_hostname][item]}}"
   loop: "{{hostvars[inventory_hostname]|select('regex', 'users_*')|list}}"
+
+- name: configs
+  set_fact:
+    configs: "{{configs|default({})|combine(hostvars[inventory_hostname][item], recursive=True)}}"
+  loop: "{{hostvars[inventory_hostname]|select('regex', 'configs_*')|list}}"
