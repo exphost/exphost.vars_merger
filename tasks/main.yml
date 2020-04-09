@@ -18,7 +18,8 @@
 - name: apps
   set_fact:
     apps: "{{apps|default({})|combine(hostvars[inventory_hostname][item], recursive=True)}}"
-  loop: "{{hostvars[inventory_hostname]|select('regex', 'apps_*')|list}}"
+  with_items: "{{hostvars[inventory_hostname]|select('regex', 'apps_*')|list}}"
+  #change from loop to with_items because of https://github.com/ansible/ansible/pull/64401
 
 - name: users
   set_fact:
